@@ -1,7 +1,29 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const menuItems = {};
+  const menuItems = (
+    <>
+      <li>
+        <NavLink to="/home">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/about">About</NavLink>
+      </li>
+      <li>
+        <NavLink to="/appointment">Appointment</NavLink>
+      </li>
+      <li>
+        <NavLink to="/reviews">Reviews</NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact">Contact Us</NavLink>
+      </li>
+      <li>
+        <NavLink to="/Login">Login</NavLink>
+      </li>
+    </>
+  );
   return (
     <div class="navbar bg-base-100">
       <div class="navbar-start">
@@ -26,30 +48,13 @@ const Navbar = () => {
             tabindex="0"
             class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-
-            <li>
-              <a>Item 3</a>
-            </li>
+            {menuItems}
           </ul>
         </div>
         <a class="btn btn-ghost normal-case text-xl">Doctors Portal</a>
       </div>
-      <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal p-0">
-          <li>
-            <a>Item 1</a>
-          </li>
-
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-      </div>
-      <div class="navbar-end">
-        <a class="btn">Get started</a>
+      <div class="navbar-center hidden lg:flex navbar-end">
+        <ul class="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
     </div>
   );
