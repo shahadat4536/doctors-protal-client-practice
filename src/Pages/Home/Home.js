@@ -5,7 +5,7 @@ import Info from "./Info";
 import MakeAppointment from "./MakeAppointment";
 import Services from "./Services";
 import Tesrimonials from "./Tesrimonials";
-import Footer from "./Footer";
+import Footer from "../Shared/Footer";
 
 const Home = () => {
   return (
