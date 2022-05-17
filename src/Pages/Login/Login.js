@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const onSubmit = (data) => console.log(data);
   if (user) {
     console.log(user);
@@ -25,21 +29,68 @@ const Login = () => {
                 placeholder="Your Email"
                 class="input input-bordered w-full max-w-xs"
                 {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is Required",
+                  },
                   pattern: {
-                    value: /[A-Za-z]{3}/,
-                    message: "error message",
+                    value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                    message: "Provide a valid Email",
                   },
                 })}
               />
               <label class="label">
-                <span class="label-text-alt">Alt label</span>
+                {errors.email?.type === "required" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors?.email?.message}
+                  </span>
+                )}
+                {errors.email?.type === "pattern" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors?.email?.message}
+                  </span>
+                )}
+              </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+              <label class="label">
+                <span class="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                class="input input-bordered w-full max-w-xs"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Password is Required",
+                  },
+
+                  minLength: {
+                    value: 6,
+                    message: "Must be 6 characters orr longer a valid Email",
+                  },
+                })}
+              />
+              <label class="label">
+                {errors.password?.type === "required" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors?.password?.message}
+                  </span>
+                )}
+                {errors.password?.type === "minLength" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors?.password?.message}
+                  </span>
+                )}
               </label>
             </div>
 
-            <input />
-            <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
-            <input type="number" {...register("age", { min: 18, max: 99 })} />
-            <input type="submit" />
+            <input
+              className="btn w-full max-w-xs text-white"
+              value="Login"
+              type="submit"
+            />
           </form>
           <div class="divider">OR</div>
           <button
