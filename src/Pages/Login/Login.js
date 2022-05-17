@@ -1,17 +1,40 @@
 import React from "react";
 import auth from "../../firebase.init";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
+import Loading from "../Shared/Loading";
 
 const Login = () => {
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, googleUser, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  if (user) {
+
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const onSubmit = (data) => {
+    console.log(data);
+    signInWithEmailAndPassword(data.email, data.password);
+  };
+
+  let signError;
+  if (loading || googleLoading) {
+    return <Loading></Loading>;
+  }
+  if (error || googleError) {
+    signError = (
+      <p className="text-red-500 text-center">
+        {error?.message || googleError?.message}
+      </p>
+    );
+  }
+  if (user || googleUser) {
     console.log(user);
   }
   return (
@@ -85,13 +108,14 @@ const Login = () => {
                 )}
               </label>
             </div>
-
+            {signError}
             <input
               className="btn w-full max-w-xs text-white"
               value="Login"
               type="submit"
             />
           </form>
+
           <div class="divider">OR</div>
           <button
             onClick={() => signInWithGoogle()}
