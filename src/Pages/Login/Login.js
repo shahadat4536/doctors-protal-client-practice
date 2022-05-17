@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import auth from "../../firebase.init";
 import {
   useSignInWithEmailAndPassword,
@@ -28,6 +28,11 @@ const Login = () => {
 
   let from = location.state?.from?.pathname || "/";
   let signError;
+  useEffect(() => {
+    if (user || googleUser) {
+      navigate(from, { replace: true });
+    }
+  }, [user, googleUser]);
   if (loading || googleLoading) {
     return <Loading></Loading>;
   }
@@ -38,9 +43,7 @@ const Login = () => {
       </p>
     );
   }
-  if (user || googleUser) {
-    navigate(from, { replace: true });
-  }
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div class="card w-96 bg-base-100 shadow-xl">
