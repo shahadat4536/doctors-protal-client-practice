@@ -7,7 +7,7 @@ import auth from "../../firebase.init";
 const BookingModal = ({ treatment, date, setTreatment }) => {
   const [user, loading, error] = useAuthState(auth);
   const { _id, name, slots } = treatment;
-  const formattedData = format(date, "PP");
+  const formattedDate = format(date, "PP");
   const handleBookinInfo = (event) => {
     event.preventDefault();
     const slot = event.target.slot.value;
@@ -15,7 +15,7 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
     const booking = {
       treatmentId: _id,
       treatment: name,
-      date,
+      date: formattedDate,
       slot,
       patient: user.email,
       patientName: user.displayName,
@@ -32,7 +32,7 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
       .then((data) => {
         console.log(data);
         if (data.success) {
-          toast.success(`Appointment is set, ${formattedData} at ${slot}`);
+          toast.success(`Appointment is set, ${formattedDate} at ${slot}`);
         } else {
           toast.error(
             `Already have an appointment  on , ${data?.booking?.date} at ${data?.booking?.slot}`
