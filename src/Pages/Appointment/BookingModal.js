@@ -31,7 +31,13 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        toast("Wow so easy!");
+        if (data.success) {
+          toast.success(`Appointment is set, ${formattedData} at ${slot}`);
+        } else {
+          toast.error(
+            `Already have an appointment  on , ${data?.booking?.date} at ${data?.booking?.slot}`
+          );
+        }
         setTreatment(null);
       });
   };
