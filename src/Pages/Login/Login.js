@@ -6,7 +6,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import Loading from "../Shared/Loading";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
@@ -23,7 +23,10 @@ const Login = () => {
     console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
   };
+  let navigate = useNavigate();
+  let location = useLocation();
 
+  let from = location.state?.from?.pathname || "/";
   let signError;
   if (loading || googleLoading) {
     return <Loading></Loading>;
@@ -36,7 +39,7 @@ const Login = () => {
     );
   }
   if (user || googleUser) {
-    console.log(user);
+    navigate(from, { replace: true });
   }
   return (
     <div className="flex justify-center items-center h-screen">
