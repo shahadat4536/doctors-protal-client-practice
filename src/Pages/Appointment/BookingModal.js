@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
 const BookingModal = ({ treatment, date, setTreatment }) => {
@@ -20,8 +21,19 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
       patientName: user.displayName,
       phone: event.target.phone.value,
     };
-    console.log(booking);
-    setTreatment(null);
+    fetch(`http://localhost:5000/booking`, {
+      method: "POST",
+      body: JSON.stringify(booking),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        toast("Wow so easy!");
+        setTreatment(null);
+      });
   };
   return (
     <div>
