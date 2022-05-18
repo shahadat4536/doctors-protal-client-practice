@@ -8,6 +8,9 @@ import SignUp from "./Pages/Login/SignUp";
 import Navbar from "./Pages/Shared/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DashBoard from "./Pages/DashBoard/DashBoard";
+import MyAppointments from "./Pages/DashBoard/MyAppointments";
+import MyReview from "./Pages/DashBoard/MyReview";
 function App() {
   return (
     <div className="max-w-7xl mx-auto px-6">
@@ -24,6 +27,17 @@ function App() {
             </RequireAuth>
           }
         ></Route>
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <DashBoard></DashBoard>
+            </RequireAuth>
+          }
+        >
+          <Route index element={<MyAppointments></MyAppointments>}></Route>
+          <Route path="review" element={<MyReview></MyReview>}></Route>
+        </Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>

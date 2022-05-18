@@ -23,8 +23,14 @@ const Navbar = () => {
         <NavLink to="/reviews">Reviews</NavLink>
       </li>
       <li>
-        <NavLink to="/contact">Contact Us</NavLink>
+        <NavLink to="/contact">Contact</NavLink>
       </li>
+      {user && (
+        <li>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+        </li>
+      )}
+
       {user ? (
         <button className="btn btn-ghost" onClick={signout}>
           SignOut
