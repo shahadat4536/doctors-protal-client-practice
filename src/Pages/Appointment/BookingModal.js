@@ -21,7 +21,7 @@ const BookingModal = ({ treatment, date, setTreatment, refetch }) => {
       patientName: user.displayName,
       phone: event.target.phone.value,
     };
-    fetch(`http://localhost:5000/booking`, {
+    fetch(`https://sheltered-gorge-61766.herokuapp.com/booking`, {
       method: "POST",
       body: JSON.stringify(booking),
       headers: {
