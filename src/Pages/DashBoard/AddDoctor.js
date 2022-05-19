@@ -16,9 +16,40 @@ const AddDoctor = () => {
   } = useQuery("services", () =>
     fetch("http://localhost:5000/service").then((res) => res.json())
   );
+
+  const imageStorageKey = "735cf8286683a0dafb3ab63d527b6b9d";
   const onSubmit = async (data) => {
-    console.log(data);
+    const image = data.image[0];
+    const formData = new FormData();
+    formData.append("image", image);
+    const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          const img = result.data.url;
+          const doctor = {
+            name: data.name,
+            email: data.email,
+            specialty: data.specialty,
+            img: img,
+          };
+        }
+        console.log("Success:", result);
+      });
   };
+
+  /**
+   * 3 ways to store images
+   * 1. Third party storage // Free open public storage is ok for practice project
+   * 2. your own storage in your own server (file system)
+   * 3. Database: Mongodb
+   *
+   * YUP : to validate file: search : Yup File validation for react hook form
+   */
 
   if (isLoading) {
     return <Loading></Loading>;
