@@ -1,5 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
+import Loading from "../Shared/Loading";
 
 const AddDoctor = () => {
   const {
@@ -7,10 +9,20 @@ const AddDoctor = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-
+  const {
+    data: services,
+    isLoading,
+    refetch,
+  } = useQuery("services", () =>
+    fetch("http://localhost:5000/service").then((res) => res.json())
+  );
   const onSubmit = async (data) => {
     console.log(data);
   };
+
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <div>
       <h2>Add a New Doctor</h2>
@@ -40,6 +52,7 @@ const AddDoctor = () => {
           </label>
         </div>
         {/* -------------------------------------------name end------------------------------- */}
+
         {/* -------------------------------------------email------------------------------- */}
         <div class="form-control w-full max-w-xs">
           <label class="label">
@@ -78,31 +91,41 @@ const AddDoctor = () => {
           <label class="label">
             <span class="label-text">specialty</span>
           </label>
+          <select
+            {...register("specialty")}
+            class="select input-bordered w-full max-w-xs"
+          >
+            {services.map((service) => (
+              <option key={service._id} value={service.name}>
+                {service.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* -------------------------------------------photo start------------------------------- */}
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Photo</span>
+          </label>
           <input
-            type="text"
-            placeholder="specialty"
+            type="file"
             class="input input-bordered w-full max-w-xs"
-            {...register("specialty", {
+            {...register("image", {
               required: {
                 value: true,
-                message: "Specialization is Required",
+                message: "Image is Required",
               },
             })}
           />
           <label class="label">
-            {errors.password?.type === "required" && (
+            {errors.name?.type === "required" && (
               <span class="label-text-alt text-red-500">
-                {errors?.password?.message}
-              </span>
-            )}
-            {errors.password?.type === "minLength" && (
-              <span class="label-text-alt text-red-500">
-                {errors?.password?.message}
+                {errors?.name?.message}
               </span>
             )}
           </label>
         </div>
-
+        {/* -------------------------------------------photo end------------------------------- */}
         <input
           className="btn w-full max-w-xs text-white"
           value="Add"
