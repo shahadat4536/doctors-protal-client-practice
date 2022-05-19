@@ -12,6 +12,7 @@ import DashBoard from "./Pages/DashBoard/DashBoard";
 import MyAppointments from "./Pages/DashBoard/MyAppointments";
 import MyReview from "./Pages/DashBoard/MyReview";
 import MyHistory from "./Pages/DashBoard/MyHistory";
+import Users from "./Pages/DashBoard/Users";
 function App() {
   return (
     <div className="max-w-7xl mx-auto px-6">
@@ -39,6 +40,7 @@ function App() {
           <Route index element={<MyAppointments></MyAppointments>}></Route>
           <Route path="review" element={<MyReview></MyReview>}></Route>
           <Route path="history" element={<MyHistory></MyHistory>}></Route>
+          <Route path="users" element={<Users></Users>}></Route>
         </Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/about" element={<About></About>}></Route>
