@@ -13,14 +13,17 @@ const MyAppointments = () => {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
-        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          return res.json();
+        })
         .then((data) => setAppointments(data));
     }
   }, [user]);
   console.log(appointments);
   return (
     <div>
-      <h2>MyAppointments:{appointments.length}</h2>
+      <h2>MyAppointments:{appointments?.length}</h2>
       <div class="overflow-x-auto">
         <table class="table w-full">
           <thead>
