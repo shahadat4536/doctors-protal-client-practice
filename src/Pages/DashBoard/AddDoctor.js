@@ -16,7 +16,9 @@ const AddDoctor = () => {
     isLoading,
     refetch,
   } = useQuery("services", () =>
-    fetch("http://localhost:5000/service").then((res) => res.json())
+    fetch("https://sheltered-gorge-61766.herokuapp.com/service").then((res) =>
+      res.json()
+    )
   );
 
   const imageStorageKey = "735cf8286683a0dafb3ab63d527b6b9d";
@@ -40,7 +42,7 @@ const AddDoctor = () => {
             img: img,
           };
           //send to  your database
-          fetch("http://localhost:5000/doctor", {
+          fetch("https://sheltered-gorge-61766.herokuapp.com/doctor", {
             method: "POST",
             headers: {
               "content-type": "application/json",

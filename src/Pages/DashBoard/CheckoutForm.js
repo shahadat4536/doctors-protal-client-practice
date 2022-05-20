@@ -6,12 +6,13 @@ const CheckoutForm = ({ appointment }) => {
   const elements = useElements();
   const [cardError, setCardError] = useState("");
   const [success, setSuccess] = useState("");
+  const [processing, setProcessing] = useState(false);
   const [transactionId, setTransactionId] = useState("");
   const [clientSecret, setClientSecret] = useState("");
 
-  const { price, patient, patientName } = appointment;
+  const { price, patient, patientName, _id } = appointment;
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://sheltered-gorge-61766.herokuapp.com/create-payment-intent", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -44,6 +45,7 @@ const CheckoutForm = ({ appointment }) => {
 
     setCardError(error?.message || "");
     setSuccess("");
+    setProcessing(true);
     //confirm card payment
     const { paymentIntent, error: intentError } =
       await stripe.confirmCardPayment(clientSecret, {
@@ -57,11 +59,30 @@ const CheckoutForm = ({ appointment }) => {
       });
     if (intentError) {
       setCardError(intentError?.message);
+      setProcessing(false);
     } else {
       setCardError("");
       setTransactionId(paymentIntent.id);
       console.log(paymentIntent);
-      setSuccess("Congrgats! Your payment is completed");
+      setSuccess("Congrats! Your payment is completed");
+      //stor payment database
+      const payment = {
+        appointment: _id,
+        transactionId: paymentIntent.id,
+      };
+      fetch(`https://sheltered-gorge-61766.herokuapp.com/booking/${_id}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(payment),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setProcessing(false);
+          console.log(data);
+        });
     }
   };
   return (
