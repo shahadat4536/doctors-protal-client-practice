@@ -1,10 +1,9 @@
 import React from "react";
-import footerd from "../../assets/images/footer.png";
+
 const footer = () => {
   return (
     <footer
       style={{
-        background: `url(${footerd})`,
         backgroundSize: "cover",
       }}
       class="footer p-10  text-base-content mt-9"
